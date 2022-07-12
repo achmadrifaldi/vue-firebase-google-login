@@ -1,17 +1,32 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div>
+    <button @click="googleSignIn">Sign In with Google</button>
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
 
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+  name: "App",
+  methods: {
+    googleSignIn: function () {
+      const auth = getAuth();
+      const provider = new GoogleAuthProvider();
+
+      provider.addScope("https://www.googleapis.com/auth/userinfo.email");
+      provider.addScope("https://www.googleapis.com/auth/firebase.database");
+
+      signInWithPopup(auth, provider)
+        .then((result) => {
+          console.log(result);
+        })
+        .catch((err) => {
+          console.log(err); // This will give you all the information needed to further debug any errors
+        });
+    },
+  },
+};
 </script>
 
 <style>
